@@ -12,20 +12,13 @@ pipeline {
                 }
             }
         }
-        stage('Deploy in Staging Enviroment'){
-            steps {
-                build job: 'Deploy_Application_Staging_Env'
-            }
-            
-        }
-        stage('Deploy in Production'){
-            steps {
-                timeout(time:5, unit:'DAYS'){
-                    input message:'Approve PRODUCTION Deployment?'
-                }
-                build job: 'Deploy_Application_Prod_Env'
+        stage('create tomcat docker image'){
+            steps{
+                sh 'docker build . -t tomcatsamplewebapp:${env.BUILD_ID}'
             }
         }
+       
     
     }
+
 }
